@@ -1,7 +1,5 @@
 <!--
-  Phase 3: barrel display contents.
-  Drawn in the parent SVG's coordinate space, translated to the display zone.
-  Internal coords are 0..300 across, 0..112 down.
+  barrel display contents.
 -->
 <script>
   import { dryer, HEAT_TEMPS, FAN_LABELS } from './dryerState.svelte.js';
