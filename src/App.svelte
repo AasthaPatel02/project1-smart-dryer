@@ -1,12 +1,14 @@
 <script>
+  import DeviceUI from './lib/DeviceUI.svelte';
+  import TestingUI from './lib/TestingUI.svelte';
 </script>
 
 <main>
   <section class="device">
-    <p>Device UI</p>
+    <DeviceUI />
   </section>
   <section class="testing">
-    <p>Testing / Project Info</p>
+    <TestingUI />
   </section>
 </main>
 
