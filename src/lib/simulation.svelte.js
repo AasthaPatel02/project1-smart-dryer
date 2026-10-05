@@ -1,13 +1,7 @@
 /*
-  Phase 8: scripted simulation.
-
-  A fixed timeline — the same sequence plays every time, with no reactive
-  threshold logic and no branching. Events are keyed to simulated seconds and
-  applied as the clock passes them.
-
+  Scripted simulation.
+  Same sequence plays every time
   Speed: one tick every 100ms advances the clock by one simulated second,
-  so 1 real second = 10 simulated seconds. The 7:00 timeline therefore takes
-  about 42 real seconds.
 */
 import { dryer, resetAll } from './dryerState.svelte.js';
 
