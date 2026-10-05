@@ -1,7 +1,11 @@
 <!--
-  Phase 2: static schematic. Side view, nozzle pointing right.
-  Zones are placeholders only — no state binding, no interactivity.
+  Dryer schematic. Side view, nozzle pointing right.
+  The barrel display is live; the remaining zones are still placeholders.
 -->
+<script>
+  import BarrelDisplay from './BarrelDisplay.svelte';
+</script>
+
 <svg
   class="dryer"
   viewBox="113 123 672 534"
@@ -18,10 +22,8 @@
     <polygon points="668,168 768,192 768,288 668,312" />
   </g>
 
-  <!-- Zone: barrel top → main display (sized for 3 columns + notification bar) -->
-  <g class="zone">
-    <rect x="310" y="165" width="300" height="112" rx="8" />
-  </g>
+  <!-- Zone: barrel top → main display (3 columns + notification bar) -->
+  <BarrelDisplay />
 
   <!-- Zone: handle grip → power, heat, fan buttons -->
   <g class="zone">
