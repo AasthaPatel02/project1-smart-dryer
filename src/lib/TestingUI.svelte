@@ -1,13 +1,17 @@
 <!--
   Testing panel. Three visually distinct sections — project info,
   manual testing buttons, simulation controls.
-  The simulation (phase 8) and placement graphic (phase 9) are stubbed out here.
 -->
 <script>
   import { dryer, resetAll } from './dryerState.svelte.js';
+  import { sim, startSim, resetSim, stopSim } from './simulation.svelte.js';
   import InfoModal from './InfoModal.svelte';
 
   let infoOpen = $state(false);
+
+  $effect(() => stopSim);
+
+  const locked = $derived(dryer.simRunning);
 
   const PROJECT_TITLE = 'Smart Hair Dryer';
   const STUDENT_NAME = 'Aastha Patel';
@@ -59,23 +63,35 @@
   <section class="card">
     <h3>Manual testing</h3>
     <div class="grid">
-      <button onclick={togglePower}>Toggle power</button>
-      <button onclick={cycleHeat}>Cycle heat</button>
-      <button onclick={cycleFan}>Cycle fan</button>
-      <button onclick={triggerOverheat}>Trigger overheat</button>
-      <button onclick={triggerHeatDamage}>Trigger heat damage</button>
-      <button onclick={() => dryer.filterDue = !dryer.filterDue}>Toggle filter</button>
-      <button onclick={resetAll}>Reset all</button>
+      <button onclick={togglePower} disabled={locked}>Toggle power</button>
+      <button onclick={cycleHeat} disabled={locked}>Cycle heat</button>
+      <button onclick={cycleFan} disabled={locked}>Cycle fan</button>
+      <button onclick={triggerOverheat} disabled={locked}>Trigger overheat</button>
+      <button onclick={triggerHeatDamage} disabled={locked}>Trigger heat damage</button>
+      <button onclick={() => dryer.filterDue = !dryer.filterDue} disabled={locked}>Toggle filter</button>
+      <!-- Goes through the sim so a finished run is cleared along with the state. -->
+      <button onclick={resetSim} disabled={locked}>Reset all</button>
     </div>
+    {#if locked}
+      <p class="note">Disabled while the simulation runs.</p>
+    {/if}
   </section>
 
   <section class="card sim">
     <h3>Simulation</h3>
     <div class="grid">
-      <button disabled>Start</button>
-      <button disabled>Reset</button>
+      <button onclick={startSim} disabled={locked}>Start</button>
+      <button onclick={resetSim} disabled={sim.status === 'idle'}>Reset</button>
     </div>
-    <p class="note">Scripted timeline arrives in phase 8.</p>
+    <p class="note">
+      {#if sim.status === 'running'}
+        Running — scripted session at 10× speed.
+      {:else if sim.status === 'done'}
+        Finished. Frozen on the final state; Reset returns to the start.
+      {:else}
+        Plays a scripted 7-minute session at 10× speed (~42 seconds).
+      {/if}
+    </p>
   </section>
 </div>
 

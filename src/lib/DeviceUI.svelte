@@ -13,7 +13,11 @@
   let holdTimer = null;
   let holdFired = false;
 
+  const locked = $derived(dryer.simRunning);
+  const heatFanLive = $derived(dryer.power && !locked);
+
   function togglePower() {
+    if (locked) return;
     dryer.power = !dryer.power;
     if (!dryer.power) {
       clearHold();
@@ -27,7 +31,7 @@
   }
 
   function cycleFan() {
-    if (!dryer.power) return;
+    if (!heatFanLive) return;
     dryer.fan = (dryer.fan % 3) + 1;
   }
 
@@ -41,7 +45,7 @@
   // Heat button: hold = cool shot, plain click = cycle. The cool shot leaves
   // dryer.heat untouched, so releasing returns to the previous level.
   function heatPressStart() {
-    if (!dryer.power) return;
+    if (!heatFanLive) return;
     clearHold();
     holdTimer = setTimeout(() => {
       holdTimer = null;
@@ -58,7 +62,7 @@
 
     if (wasCoolShot) {
       dryer.coolShot = false;
-    } else if (stillPending && dryer.power) {
+    } else if (stillPending && heatFanLive) {
       cycleHeat();
     }
   }
@@ -116,11 +120,13 @@
   <g
     class="button"
     class:on={dryer.power}
+    class:disabled={locked}
     role="button"
     tabindex="0"
     aria-label="Power"
     aria-pressed={dryer.power}
-    style="cursor:pointer"
+    aria-disabled={locked}
+    style={locked ? 'cursor:default' : 'cursor:pointer'}
     onclick={togglePower}
     onkeydown={(e) => onKey(e, togglePower)}
   >
@@ -130,17 +136,17 @@
 
   <g
     class="button"
-    class:disabled={!dryer.power}
+    class:disabled={!heatFanLive}
     role="button"
     tabindex="0"
     aria-label="Heat level — click to cycle, hold for cool shot"
-    aria-disabled={!dryer.power}
-    style={dryer.power ? 'cursor:pointer' : 'cursor:default'}
+    aria-disabled={!heatFanLive}
+    style={heatFanLive ? 'cursor:pointer' : 'cursor:default'}
     onpointerdown={heatPressStart}
     onpointerup={heatPressEnd}
     onpointerleave={heatPressCancel}
     onpointercancel={heatPressCancel}
-    onkeydown={(e) => onKey(e, () => dryer.power && cycleHeat())}
+    onkeydown={(e) => onKey(e, () => heatFanLive && cycleHeat())}
   >
     <rect x="245" y="440" width="55" height="40" rx="12" />
     <text x="272.5" y="465" pointer-events="none">HEAT</text>
@@ -148,12 +154,12 @@
 
   <g
     class="button"
-    class:disabled={!dryer.power}
+    class:disabled={!heatFanLive}
     role="button"
     tabindex="0"
     aria-label="Fan speed — click to cycle"
-    aria-disabled={!dryer.power}
-    style={dryer.power ? 'cursor:pointer' : 'cursor:default'}
+    aria-disabled={!heatFanLive}
+    style={heatFanLive ? 'cursor:pointer' : 'cursor:default'}
     onclick={cycleFan}
     onkeydown={(e) => onKey(e, cycleFan)}
   >
