@@ -1,29 +1,587 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
+/*
+  Light, minimal two-card layout.
 
-  font: 16px/145% system-ui, 'Segoe UI', Roboto, sans-serif;
-  color: var(--text);
-  background: var(--bg);
+  Device UI on the left, Testing UI on the right, each in its own white
+  container on a soft off-white page.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --page: #f6f8fc;
+  --panel: #ffffff;
+  --text-h: #1a1a18;
+  --text: #6b6b66;
+  --border: #c9d4f0;
+  --border-control: #c9d4f0;
+  --rule: #e3e9f7;
+  --accent: #3b5bdb;
+  --accent-hover: #2f49b0;
+  --link: #2f49b0;
+  --link-hover: #243a8f;
+  --danger: #d64545;
+
+  --gray-hover: #eef2fc;
+
+  font: 15px/1.5 'DM Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-h);
   -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--page);
 }
 
 #app {
   min-height: 100vh;
 }
 
-h1, h2, h3 {
-  color: var(--text-h);
-  font-weight: 500;
+h1,
+h2,
+h3 {
   margin: 0 0 8px;
+  font-weight: 600;
 }
 
 p {
   margin: 0;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* -------- Layout  -------- */
+
+/*
+  Two containers side by side, centered in a fixed-width column so the layout
+  looks the same on any screen size. Both cards are the same height (stretch).
+  They stack on narrow screens.
+*/
+.app-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px;
+}
+
+.device,
+.testing {
+  min-width: 0;
+  padding: 28px;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel);
+}
+
+/* Device container: title, the dryer, caption below. */
+.device {
+  flex: 1 1 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.device::after {
+  content: 'Side view · interactive prototype';
+  font-size: 13px;
+  color: var(--text);
+}
+
+.testing {
+  flex: 1 1 420px;
+}
+
+/* --------------- Panel ------------------ */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hairline rules between sections rather than boxed cards. */
+.card + .card {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.sec-project {
+  position: relative;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Title row of the testing card; the info button sits at its right edge. */
+.sec-project .page-title {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin-bottom: 8px;
+  padding-right: 56px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.byline {
+  margin-bottom: 2px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.doc-link {
+  font-size: 14px;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.doc-link:hover {
+  color: var(--link-hover);
+}
+
+.note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.placement {
+  margin: 16px 0 0;
+}
+
+.placement img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.placement figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* --------------- Controls ------------------ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* Reset all is a one-off action, so it spans the full row. */
+.sec-testing .grid .test-btn:last-child {
+  grid-column: 1 / -1;
+}
+
+.test-btn {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border-control);
+  border-radius: 10px;
+  background: var(--panel);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--text-h);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.test-btn:hover:not(:disabled) {
+  background: var(--gray-hover);
+  border-color: #7f96db;
+}
+
+.test-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* The one primary action on the page. */
+.test-btn.start {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.test-btn.start:hover:not(:disabled) {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+}
+
+/*
+ Info Button
+*/
+.sec-project .wide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border-color: #d9d9d3;
+  border-radius: 50%;
+  font-size: 0;
+  color: transparent;
+  background: var(--panel)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d64545' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E")
+    center / 20px 20px no-repeat;
+}
+
+.sec-project .wide:hover:not(:disabled) {
+  border-color: #c4c4bd;
+  background-color: #f4f4f1;
+}
+
+/* ------------- Device UI ------------------ */
+
+.dryer {
+  --body-fill: #e6e3de;
+  --body-stroke: #4a4650;
+  --led-dark: #55505c;
+  --led-cool: #4b8fd6;
+  --heat-low: #f6c9a2;
+  --heat-med: #e8a33d;
+  --heat-high: #e24b3c;
+  --filter-amber: #e8a33d;
+  --button-fill: #ffffff;
+  --button-press: #d8d4ce;
+  --button-on: #8fd3a6;
+
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  padding: 24px;
+}
+
+.dryer-body > * {
+  fill: var(--body-fill);
+  stroke: var(--body-stroke);
+  stroke-width: 2;
+}
+
+/* Nozzle LED ring: a thick collar housing a lit lens. */
+.ring .collar {
+  fill: var(--body-fill);
+  stroke: var(--body-stroke);
+  stroke-width: 2;
+}
+
+.ring .lens {
+  fill: var(--ring-color);
+  stroke: var(--body-stroke);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 10px var(--ring-color));
+}
+
+.ring.off {
+  --ring-color: var(--led-dark);
+}
+
+/* Dark gray is not glowing, so it carries no halo. */
+.ring.off .lens {
+  filter: none;
+}
+
+.ring.cool {
+  --ring-color: var(--led-cool);
+}
+
+.ring.low {
+  --ring-color: var(--heat-low);
+}
+
+.ring.med {
+  --ring-color: var(--heat-med);
+}
+
+.ring.high {
+  --ring-color: var(--heat-high);
+}
+
+/* Overheat is the same red as High, distinguished only by flashing. */
+.ring.overheat {
+  --ring-color: var(--heat-high);
+}
+
+.ring.overheat .lens {
+  animation: ring-flash 0.7s ease-in-out infinite;
+}
+
+@keyframes ring-flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* Rear filter LED */
+.led circle {
+  fill: var(--led-dark);
+  stroke: var(--body-stroke);
+  stroke-width: 1.5;
+}
+
+.led.lit circle {
+  fill: var(--filter-amber);
+  filter: drop-shadow(0 0 8px var(--filter-amber));
+}
+
+.button rect {
+  fill: var(--button-fill);
+  stroke: var(--body-stroke);
+  stroke-width: 2;
+}
+
+.button text {
+  text-anchor: middle;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  fill: var(--body-stroke);
+}
+
+.button:active rect {
+  fill: var(--button-press);
+}
+
+.button.on rect {
+  fill: var(--button-on);
+}
+
+/* Heat and fan read as unavailable while the dryer is off. */
+.button.disabled {
+  opacity: 0.4;
+}
+
+.button.disabled:active rect {
+  fill: var(--button-fill);
+}
+
+.button:focus-visible rect {
+  stroke: #4b6bd6;
+  stroke-width: 3;
+}
+
+.grille line {
+  stroke: var(--body-stroke);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* -------------- Barrel display ------------------ */
+
+.display {
+  --screen-fill: #1b1a20;
+  --screen-stroke: #4a4650;
+  --screen-text: #f2f0ec;
+  --screen-dim: #8a8494;
+  --screen-rule: #3a3744;
+  --alert-amber: #e8a33d;
+  --alert-red: #e24b3c;
+}
+
+.screen {
+  fill: var(--screen-fill);
+  stroke: var(--screen-stroke);
+  stroke-width: 2;
+}
+
+.rule {
+  stroke: var(--screen-rule);
+  stroke-width: 1.5;
+}
+
+.display-text {
+  text-anchor: middle;
+  fill: var(--screen-text);
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  fill: var(--screen-dim);
+}
+
+.label.alert {
+  fill: var(--alert-red);
+}
+
+.value {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* Inactive symbols stay in place, dimmed; lit ones take their alert color. */
+.symbol > * {
+  fill: none;
+  stroke: var(--screen-dim);
+  stroke-width: 1.5;
+  opacity: 0.35;
+}
+
+.symbol .glyph {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--screen-dim);
+  stroke: none;
+}
+
+.symbol.lit > * {
+  opacity: 1;
+}
+
+.damage.lit > * {
+  stroke: var(--alert-amber);
+}
+
+.damage.lit .glyph {
+  fill: var(--alert-amber);
+}
+
+.overheat.lit > * {
+  stroke: var(--alert-red);
+}
+
+.overheat.lit .glyph {
+  fill: var(--alert-red);
+}
+
+.filter.lit > * {
+  stroke: var(--alert-amber);
+}
+
+/* -------------- Info Modal ----------------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  background: rgba(26, 26, 24, 0.4);
+}
+
+.dialog {
+  width: 540px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: 0 16px 40px rgba(26, 26, 24, 0.12);
+}
+
+.dialog:focus {
+  outline: none;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-control);
+  border-radius: 50%;
+  background: var(--panel);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-h);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.close:hover {
+  background: var(--gray-hover);
+}
+
+.modal-body {
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.modal-section-title {
+  margin: 24px 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.modal-section-title:first-child {
+  margin-top: 0;
+}
+
+.modal-list {
+  margin: 8px 0 0;
+  padding-left: 16px;
+}
+
+.modal-item {
+  margin-bottom: 8px;
+}
+
+.modal-strong {
+  color: var(--text-h);
+  font-weight: 600;
 }
