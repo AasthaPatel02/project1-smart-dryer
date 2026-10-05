@@ -3,13 +3,12 @@
                 barrel display goes blank and the other two buttons do nothing.</li> <li class="modal-item"><strong class="modal-strong">HEAT</strong> — a short click cycles Low → Med → High → Low. <strong class="modal-strong">Press and hold</strong> for a cool shot; releasing returns to the
                 heat level you were on.</li> <li class="modal-item"><strong class="modal-strong">FAN</strong> — click cycles the fan speed Low → Med → High → Low.</li></ul> <p>The nozzle ring at the front changes color with the heat state, and the LED on
               the rear intake grille lights amber when the filter needs cleaning.</p> <h3 class="modal-section-title">Manual testing buttons</h3> <p>These testing buttons demonstrate how the controls on the handle would work.
-              As well as show the how each of the three possible alert states would look
-              on the display.</p> <ul class="modal-list"><li class="modal-item"><strong class="modal-strong">Power On/Off</strong>, <strong class="modal-strong">Cycle heat</strong>, <strong class="modal-strong">Cycle fan</strong> — the handle controls (Physical buttons on the Device UI work as well)</li> <li class="modal-item"><strong class="modal-strong">Trigger overheat</strong> — fires the overheat alert: the dryer
+              As well as show the how each of the three possible alert/notification states would look like
+              on the display.</p> <ul class="modal-list"><li class="modal-item"><strong class="modal-strong">Power On/Off</strong>, <strong class="modal-strong">Cycle heat</strong>, <strong class="modal-strong">Cycle fan</strong> — the handle controls (Physical buttons on the Device UI work as well)</li> <li class="modal-item"><strong class="modal-strong">Device Overheat Notification</strong> — fires the overheat alert: the dryer
                 shuts itself off, the nozzle ring flashes red, and a cooldown replaces the
                 timer. Overheat takes priority, so the other two alerts are suppressed
-                while it is active.</li> <li class="modal-item"><strong class="modal-strong">Trigger heat damage</strong> — puts the dryer on High heat and
-                lights the heat-damage alert. It clears when you
-                drop below High.</li> <li class="modal-item"><strong class="modal-strong">Toggle filter</strong> — switches the filter-cleaning alert on and
+                while it is active.</li> <li class="modal-item"><strong class="modal-strong">Heat Damage Notification</strong> — Notifies user of potential hair damage due to a high heat setting and
+                lights the heat-damage alert. It clears when the user changes the heat setting to a lower temperature.</li> <li class="modal-item"><strong class="modal-strong">Clean Filter Notification</strong> — switches the filter-cleaning alert on and
                 off, lighting both the display symbol and the rear LED.</li> <li class="modal-item"><strong class="modal-strong">Reset all</strong> — returns every value to the starting state.</li></ul> <h3 class="modal-section-title">Simulation</h3> <p><strong class="modal-strong">Start</strong> plays a scripted session — the same timeline every time,
               at 10× speed, taking about 45 seconds. It powers on at High heat, raises the
               heat-damage alert, overheats and cools down, then powers off with the filter
