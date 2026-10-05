@@ -200,7 +200,7 @@
 
     display: block;
     margin: auto;
-    width: 1200px;
+    width: 800px;
     height: auto;
   }
 

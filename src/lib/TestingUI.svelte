@@ -56,7 +56,7 @@
     <p><a href={WRITEUP_URL} target="_blank">Link to Project Documentation</a></p>
 
     <figure class="placement">
-      <img src="/HybridSketch.png" alt="Hair dryer with the interface drawn on it, showing the display on the barrel" />
+      <img src="{import.meta.env.BASE_URL}HybridSketch.png" alt="Hair dryer with the interface drawn on it, showing the display on the barrel" />
       <figcaption>Where this interface sits on the physical dryer.</figcaption>
     </figure>
 
