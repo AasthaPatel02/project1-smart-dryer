@@ -1,7 +1,7 @@
 <!--
   Dryer schematic. Side view, nozzle pointing right.
-  The barrel display and handle controls are live; the nozzle collar and rear
-  LED are still placeholders.
+  All four interface zones are live: barrel display, handle controls,
+  nozzle LED ring, rear filter LED.
 -->
 <script>
   import BarrelDisplay from './BarrelDisplay.svelte';
@@ -82,6 +82,15 @@
 
   // A leaked timer would flip coolShot after teardown.
   $effect(() => clearHold);
+
+  // Nozzle ring. Overheat wins over everything — it fires with power already
+  // off, and its flashing has to stay distinct from solid High heat.
+  const ringState = $derived.by(() => {
+    if (dryer.overheating) return 'overheat';
+    if (!dryer.power) return 'off';
+    if (dryer.coolShot) return 'cool';
+    return ['low', 'med', 'high'][dryer.heat - 1];
+  });
 </script>
 
 <svg
@@ -153,8 +162,9 @@
   </g>
 
   <!-- Zone: nozzle collar → LED ring -->
-  <g class="zone">
-    <rect x="640" y="160" width="28" height="160" rx="10" />
+  <g class="ring {ringState}">
+    <rect class="collar" x="630" y="148" width="46" height="184" rx="22" />
+    <rect class="lens" x="638" y="158" width="30" height="164" rx="15" />
   </g>
 
   <!-- Zone: rear intake grille → filter LED -->
@@ -163,8 +173,8 @@
     <line x1="186" y1="158" x2="186" y2="322" />
     <line x1="204" y1="158" x2="204" y2="322" />
   </g>
-  <g class="zone">
-    <circle cx="186" cy="178" r="8" />
+  <g class="led" class:lit={dryer.filterDue}>
+    <circle cx="186" cy="178" r="9" />
   </g>
 </svg>
 
@@ -172,8 +182,12 @@
   .dryer {
     --body-fill: #e6e3de;
     --body-stroke: #4a4650;
-    --zone-fill: #ffffff;
-    --zone-stroke: #8a8494;
+    --led-dark: #55505c;
+    --led-cool: #4b8fd6;
+    --heat-low: #f6c9a2;
+    --heat-med: #e8a33d;
+    --heat-high: #e24b3c;
+    --filter-amber: #e8a33d;
     --button-fill: #ffffff;
     --button-press: #d8d4ce;
     --button-on: #8fd3a6;
@@ -190,11 +204,74 @@
     stroke-width: 2;
   }
 
-  .zone > * {
-    fill: var(--zone-fill);
-    stroke: var(--zone-stroke);
+  /* Nozzle LED ring: a thick collar housing a lit lens. */
+  .ring .collar {
+    fill: var(--body-fill);
+    stroke: var(--body-stroke);
+    stroke-width: 2;
+  }
+
+  .ring .lens {
+    fill: var(--ring-color);
+    stroke: var(--body-stroke);
     stroke-width: 1.5;
-    stroke-dasharray: 4 3;
+    filter: drop-shadow(0 0 10px var(--ring-color));
+  }
+
+  .ring.off {
+    --ring-color: var(--led-dark);
+  }
+
+  /* Dark gray is not glowing, so it carries no halo. */
+  .ring.off .lens {
+    filter: none;
+  }
+
+  .ring.cool {
+    --ring-color: var(--led-cool);
+  }
+
+  .ring.low {
+    --ring-color: var(--heat-low);
+  }
+
+  .ring.med {
+    --ring-color: var(--heat-med);
+  }
+
+  .ring.high {
+    --ring-color: var(--heat-high);
+  }
+
+  /* Overheat is the same red as High, distinguished only by flashing. */
+  .ring.overheat {
+    --ring-color: var(--heat-high);
+  }
+
+  .ring.overheat .lens {
+    animation: ring-flash 0.7s ease-in-out infinite;
+  }
+
+  @keyframes ring-flash {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+
+  /* Rear filter LED */
+  .led circle {
+    fill: var(--led-dark);
+    stroke: var(--body-stroke);
+    stroke-width: 1.5;
+  }
+
+  .led.lit circle {
+    fill: var(--filter-amber);
+    filter: drop-shadow(0 0 8px var(--filter-amber));
   }
 
   .button rect {
