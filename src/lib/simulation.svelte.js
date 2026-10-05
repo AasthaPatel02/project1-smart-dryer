@@ -38,9 +38,6 @@ const TIMELINE = [
       dryer.cooldownSeconds = OVERHEAT_COOLDOWN_SECONDS;
       dryer.power = false;
       dryer.coolShot = false;
-      // The tool is off, so it is no longer damaging hair. Overheat suppresses
-      // this alert on the display anyway; clearing it keeps the state honest
-      // once the cooldown ends.
       dryer.heatDamage = false;
     }
   },
@@ -79,8 +76,6 @@ function applyEventsAt(second) {
 function tick() {
   sim.simSeconds += 1;
 
-  // Clocks advance before the second's events fire, so an event that sets a
-  // clock is not immediately undone by this tick.
   if (dryer.overheating) {
     dryer.cooldownSeconds = Math.max(0, dryer.cooldownSeconds - 1);
   } else if (dryer.power) {
