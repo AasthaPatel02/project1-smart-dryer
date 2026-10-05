@@ -1,11 +1,13 @@
 <!--
-  Phase 6: testing panel. Three visually distinct sections — project info,
+  Testing panel. Three visually distinct sections — project info,
   manual testing buttons, simulation controls.
-  The info modal (phase 7), simulation (phase 8) and placement graphic
-  (phase 9) are stubbed out here.
+  The simulation (phase 8) and placement graphic (phase 9) are stubbed out here.
 -->
 <script>
   import { dryer, resetAll } from './dryerState.svelte.js';
+  import InfoModal from './InfoModal.svelte';
+
+  let infoOpen = $state(false);
 
   const PROJECT_TITLE = 'Smart Hair Dryer';
   const STUDENT_NAME = 'Aastha Patel';
@@ -51,8 +53,7 @@
 
     <div class="placeholder">Placement graphic — phase 9</div>
 
-    <button class="wide" disabled>How to use this</button>
-    <p class="note">Modal arrives in phase 7.</p>
+    <button class="wide" onclick={() => (infoOpen = true)}>How to use this</button>
   </section>
 
   <section class="card">
@@ -77,6 +78,8 @@
     <p class="note">Scripted timeline arrives in phase 8.</p>
   </section>
 </div>
+
+<InfoModal open={infoOpen} onclose={() => (infoOpen = false)} />
 
 <style>
   .panel {
