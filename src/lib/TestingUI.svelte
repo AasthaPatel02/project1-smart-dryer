@@ -3,7 +3,7 @@
   manual testing buttons, simulation controls.
 -->
 <script>
-  import { dryer, resetAll } from './dryerState.svelte.js';
+  import { dryer } from './dryerState.svelte.js';
   import { sim, startSim, resetSim, stopSim } from './simulation.svelte.js';
   import InfoModal from './InfoModal.svelte';
 
@@ -55,7 +55,10 @@
     <p class="byline">{STUDENT_NAME}</p>
     <p><a href={WRITEUP_URL} target="_blank">Link to Project Documentation</a></p>
 
-    <div class="placeholder">Placement graphic — phase 9</div>
+    <figure class="placement">
+      <img src="/HybridSketch.png" alt="Hair dryer with the interface drawn on it, showing the display on the barrel" />
+      <figcaption>Where this interface sits on the physical dryer.</figcaption>
+    </figure>
 
     <button class="wide" onclick={() => (infoOpen = true)}>How to use this</button>
   </section>
@@ -130,15 +133,20 @@
     color: var(--text);
   }
 
-  .placeholder {
-    display: grid;
-    place-items: center;
-    height: 120px;
-    margin: 12px 0;
-    border: 1px dashed #b9b4c0;
-    border-radius: 8px;
+  .placement {
+    margin: 0;
+  }
+
+  .placement img {
+    width: 100%;
+    max-width: 220px;
+    border-radius: 6px;
+    display: block;
+  }
+
+  .placement figcaption {
     font-size: 13px;
-    color: var(--text);
+    margin-top: 6px;
   }
 
   .grid {
