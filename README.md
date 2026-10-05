@@ -1,6 +1,8 @@
+Aastha Patel
+
 # Smart Hairstyling Tool
 
-An interactive prototype of a smart hair dryer, with a built-in testing panel for trying out each part of the device. By Aastha Patel.
+An interactive prototype of a smart hair dryer, with a built-in testing panel for trying out each part of the device.
 
 The page has two sides:
 
